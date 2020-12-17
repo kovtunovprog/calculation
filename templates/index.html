@@ -33,7 +33,10 @@
                 <label for="input-num-c">c</label><input id="input-num-c">
                 <button class="calculate-button" type="button">Calculate</button>
                 <button class="save-button">Save</button>
-                <p id="num-result"></p>
+                <div class="result-num-block">
+                    <p>Result:</p>
+                    <p id="num-result"></p>
+                </div>
                 <p id="response-text"></p>
             {% endif %}
         </div> 
@@ -62,7 +65,7 @@
             let results = $('.results');
             results.html('');
             arr.forEach(function(item, i,) {
-                let text = "<div class='result'>" + "<p>" + item.date + "</p>" + "<p>" + item.num + "</p>" + "<button class='delete-button'>Delete</button>" + "<p class='num-index'>" + item.id +  "</p>" + "</div>";
+                let text = "<div class='result'>" + "<p>" + item.date + "</p>" + "<p>" + item.num + "</p>" + "<p>" + item.input_a + "</p>" + "<p>" + item.input_b + "</p>" + "<p>" + item.input_c + "</p>" + "<button class='button delete-button'>Delete</button>" + "<p class='num-index'>" + item.id +  "</p>" + "</div>";
                 results.append(text);
             });
 
@@ -95,7 +98,11 @@
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onload = function () {
             console.log(xhr.responseText);
-            get_all_nums()
+            get_all_nums();
+            $('#input-num-c').val("");
+            $('#input-num-a').val("");
+            $('#input-num-b').val("");
+            $('#num-result').html("");
         };
 
         xhr.send(
@@ -129,6 +136,157 @@
 <style>
     .num-index {
         display: none;
+    }
+    body {
+        font-size: 14px;
+        font-family: Roboto;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+
+    h2 {
+        font-size: 36px;
+    }
+
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background: #5303FE;
+        width: 100%;
+        margin-top: 0;
+        margin-bottom: 40px;
+
+    }
+
+    header .header-buttons {
+        display: flex;
+    }
+
+    span {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 30px;
+        color: #FFFFFF;
+    }
+
+    .button {
+        padding: 2px 4px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .sign_in_button {
+        color: #FFFFFF;
+        background-color:#5303FE;
+        border: 1px solid #FFFFFF;
+        margin-right: 15px;
+    }
+
+    .sign_out_button {
+        color: black;
+        background-color: #F0EFEF;
+        border-radius: 5px;
+        border: 1px solid #F0EFEF;
+        margin-right: 30px;
+    }
+
+    .block-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .block-inline {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 20px;
+        width: 1110px;
+        height: 350px;
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+
+    }
+
+    .delete-button {
+        border: 1px solid #5303FE;
+        background: #5303FE;
+        color: #F0EFEF;
+        cursor: pointer;
+        max-height: 24px;
+    }
+
+    .delete-button:hover {
+        background: black;
+        border: 1px solid black;
+    }
+
+
+    .calculations {
+
+    }
+
+    .greeting {
+
+    }
+
+    .result-num-block {
+        display: flex;
+    }
+
+    .result-num-block p {
+        margin-right: 10px;
+    }
+
+
+    .result {
+        color: #0094FF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .result p {
+        margin-right: 30px;
+    }
+
+    .sign_in_section {
+        display: flex;
+        justify-content: center;
+        max-width: 370px;
+    }
+
+    .sign_in_text {
+        background-color: #5303FE;
+        display: flex;
+        border-radius: 5px 5px 0px 0px;
+        width: 97.5%;
+        max-width: 370px;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .login-form {
+        margin: 10px;
+    }
+
+    .login-form input {
+        width: 340px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    .login-form button {
+        margin-top: 10px;
     }
 </style>
 

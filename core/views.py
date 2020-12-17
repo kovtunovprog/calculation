@@ -1,9 +1,7 @@
 import json
 
 from django.shortcuts import render, HttpResponse
-from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views import View
 
 from core.models import CalculateResults
 
@@ -26,7 +24,11 @@ def calculate(request):
             if int(i) < 0:
                 result += 1
         except ValueError:
-            return HttpResponse(json.dumps({'num': 'Вы должны были ввести число'}))
+            try:
+                if float(i) < 0:
+                    result += 1
+            except ValueError:
+                return HttpResponse(json.dumps({'num': 'Вы должны были ввести число'}))
     return HttpResponse(json.dumps({'num': f'{result}'}), content_type='application/json')
 
 
@@ -41,11 +43,14 @@ def api_view(request):
         return HttpResponse(json.dumps({'text': 'Success'}))
 
     if request.method == 'GET':
-        results = CalculateResults.objects.order_by('-date_result')[:5]
+        results = CalculateResults.objects.filter(username=request.user.username).order_by('-date_result')[:5]
         results_list = []
         for num in results:
             results_list.append({'date': num.date_result.strftime("%B the %d of %Y is %A at %I:%M %p"),
                                  'num': num.result_num,
+                                 'input_a': num.input_a,
+                                 'input_b': num.input_b,
+                                 'input_c': num.input_c,
                                  'id': num.pk
                                  })
         return HttpResponse(json.dumps({'results': results_list}), content_type='application/json')
