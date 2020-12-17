@@ -16,7 +16,7 @@
    <div class="header-buttons">
        <span style="font-size: 14px; margin-right: 10px">{{ user.username }}</span>
        {% if user.id %}
-           <a href="{% url 'logout' %}" class="button sign_in_button">Logout</a>
+           <a href="{% url 'logout' %}" id="logout" class="button sign_in_button">Logout</a>
        {% else %}
            <a href="{% url 'login' %}" class="button sign_in_button">Sign In</a>
            <a href="{% url 'register' %}" class="button sign_out_button">Sign Up</a>
@@ -27,13 +27,17 @@
 <section class="block-container">
     <div class="block-inline calculations">
         <div class="text">
+        {% if user.id %}
+            <h1>Подсчет отрицательных чисел</h1>
+        {% else %}
             <h1>Hello!</h1>
+        {% endif %}
             {% if user.id %}
                 <label for="input-num-a">a</label><input id="input-num-a">
                 <label for="input-num-b">b</label><input id="input-num-b">
                 <label for="input-num-c">c</label><input id="input-num-c">
-                <button class="calculate-button" type="button">Calculate</button>
-                <button class="save-button">Save</button>
+                <button class="calculate-button button" type="button">Calculate</button>
+                <button id="save-button" class="save-button button">Save</button>
                 <div class="result-num-block">
                     <p>Result:</p>
                     <p id="num-result"></p>
@@ -79,7 +83,7 @@
         let b = $('#input-num-b').val();
         let c = $('#input-num-c').val();
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'api/1.0/nums/calculate', true);
+        xhr.open('POST', '', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onload = function () {
             console.log(xhr.responseText);
@@ -222,9 +226,33 @@
 
     }
 
-    .delete-button {
+    .calculate-button {
         border: 1px solid #5303FE;
         background: #5303FE;
+        color: #F0EFEF;
+        cursor: pointer;
+    }
+
+    .calculate-button:hover {
+        background: black;
+        border: 1px solid black;
+    }
+
+    .save-button {
+        border: 1px solid #1935fe;
+        background: #1935fe;
+        color: #F0EFEF;
+        cursor: pointer;
+    }
+
+    .save-button:hover {
+        background: black;
+        border: 1px solid black;
+    }
+
+    .delete-button {
+        border: 1px solid #fe111a;
+        background: #fe111a;
         color: #F0EFEF;
         cursor: pointer;
         max-height: 24px;

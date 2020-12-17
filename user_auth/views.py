@@ -1,10 +1,12 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, get_user_model, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 
 from core.views import index
 from user_auth.forms import AuthenticateForm
 from user_auth.utils import create_user
+
+User = get_user_model()
 
 
 def register_view(request):
@@ -56,5 +58,8 @@ def login_view(request):
 
 
 def logout_view(request):
+    username = request.user.username
     logout(request)
+    if username == 'test':
+        User.objects.filter(username=username).delete()
     return redirect(index)

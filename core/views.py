@@ -6,30 +6,29 @@ from django.views.decorators.csrf import csrf_exempt
 from core.models import CalculateResults
 
 
-def index(request):
-    template_name = 'index.html'
-    return render(request, template_name)
-
-
 @csrf_exempt
-def calculate(request):
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-    nums = body['nums']
-    result = 0
-    for i in nums:
-        if i == '':
-            return HttpResponse(json.dumps({'num': 'Вы ввели не все числа'}), status=500)
-        try:
-            if int(i) < 0:
-                result += 1
-        except ValueError:
+def index(request):
+    if request.method == 'GET':
+        template_name = 'index.html'
+        return render(request, template_name)
+    if request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        nums = body['nums']
+        result = 0
+        for i in nums:
+            if i == '':
+                return HttpResponse(json.dumps({'num': 'Вы ввели не все числа'}), status=500)
             try:
-                if float(i) < 0:
+                if int(i) < 0:
                     result += 1
             except ValueError:
-                return HttpResponse(json.dumps({'num': 'Вы должны были ввести число'}))
-    return HttpResponse(json.dumps({'num': f'{result}'}), content_type='application/json')
+                try:
+                    if float(i) < 0:
+                        result += 1
+                except ValueError:
+                    return HttpResponse(json.dumps({'num': 'Вы должны были ввести число'}))
+        return HttpResponse(json.dumps({'num': f'{result}'}), content_type='application/json')
 
 
 @csrf_exempt
