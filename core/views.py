@@ -46,7 +46,7 @@ def api_view(request):
         results = CalculateResults.objects.filter(username=request.user.username).order_by('-date_result')[:5]
         results_list = []
         for num in results:
-            results_list.append({'date': num.date_result.strftime("%B the %d of %Y is %A at %I:%M %p"),
+            results_list.append({'date': num.date_result.strftime("%d/%m/%Y at %I:%M %p"),
                                  'num': num.result_num,
                                  'input_a': num.input_a,
                                  'input_b': num.input_b,

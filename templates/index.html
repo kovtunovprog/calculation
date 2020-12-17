@@ -14,6 +14,7 @@
 <header>
    <span>Calculate</span>
    <div class="header-buttons">
+       <span style="font-size: 14px; margin-right: 10px">{{ user.username }}</span>
        {% if user.id %}
            <a href="{% url 'logout' %}" class="button sign_in_button">Logout</a>
        {% else %}
@@ -178,6 +179,11 @@
         text-decoration: none;
         border-radius: 5px;
         font-size: 14px;
+    }
+
+    .header-buttons {
+        display: flex;
+        align-items: center;
     }
 
     .sign_in_button {

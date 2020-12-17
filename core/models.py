@@ -8,6 +8,6 @@ class CalculateResults(models.Model):
         default=timezone.now
     )
     username = models.CharField(max_length=30)
-    input_a = models.IntegerField()
-    input_b = models.IntegerField()
-    input_c = models.IntegerField()
+    input_a = models.CharField(max_length=30)
+    input_b = models.CharField(max_length=30)
+    input_c = models.CharField(max_length=30)
