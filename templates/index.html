@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+{#    <link rel="stylesheet" type="text/css" href="style.css">#}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<header>
+   <span>Calculate</span>
+   <div class="header-buttons">
+       {% if user.id %}
+           <a href="{% url 'logout' %}" class="button sign_in_button">Logout</a>
+       {% else %}
+           <a href="{% url 'login' %}" class="button sign_in_button">Sign In</a>
+           <a href="{% url 'register' %}" class="button sign_out_button">Sign Up</a>
+       {% endif %}
+
+   </div>
+</header>
+<section class="block-container">
+    <div class="block-inline calculations">
+        <div class="text">
+            <h1>Hello!</h1>
+            {% if user.id %}
+                <label for="input-num-a">a</label><input id="input-num-a">
+                <label for="input-num-b">b</label><input id="input-num-b">
+                <label for="input-num-c">c</label><input id="input-num-c">
+                <button class="calculate-button" type="button">Calculate</button>
+                <button class="save-button">Save</button>
+                <p id="num-result"></p>
+                <p id="response-text"></p>
+            {% endif %}
+        </div> 
+    </div>
+</section>
+   
+<section class="block-container">  
+     <div class="block-inline greeting">
+         {% if user.id %}
+            <h2>Последние вычисления</h2>
+            <div class="results">
+            </div>
+         {% endif %}
+    </div>
+</section>
+
+<script>
+    get_all_nums();
+    function get_all_nums() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'api/1.0/nums', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function () {
+            let responseObj = JSON.parse(xhr.responseText);
+            let arr = responseObj.results;
+            let results = $('.results');
+            results.html('');
+            arr.forEach(function(item, i,) {
+                let text = "<div class='result'>" + "<p>" + item.date + "</p>" + "<p>" + item.num + "</p>" + "<button class='delete-button'>Delete</button>" + "<p class='num-index'>" + item.id +  "</p>" + "</div>";
+                results.append(text);
+            });
+
+        };
+        xhr.send();
+    }
+    
+    function get_calculate_request() {
+        let a = $('#input-num-a').val();
+        let b = $('#input-num-b').val();
+        let c = $('#input-num-c').val();
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'api/1.0/nums/calculate', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function () {
+            console.log(xhr.responseText);
+            let responseObj = JSON.parse(xhr.responseText);
+            $('#num-result').html(responseObj.num);
+        };
+        xhr.send(JSON.stringify({'nums': [a, b, c]}));
+    }
+
+    function get_save_request() {
+        let num = $('#num-result').html();
+        let a = $('#input-num-a').val();
+        let b = $('#input-num-b').val();
+        let c = $('#input-num-c').val();
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'api/1.0/nums', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function () {
+            console.log(xhr.responseText);
+            get_all_nums()
+        };
+
+        xhr.send(
+            JSON.stringify(
+                {'num': num, 'input_a': a, 'input_b': b, 'input_c': c}
+            )
+        );
+    }
+
+    function delete_data() {
+        let result_block = $(this).parent();
+        let id = result_block.children('.num-index');
+        console.log(id.html());
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', 'api/1.0/nums', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function () {
+            console.log(xhr.responseText);
+            get_all_nums()
+        };
+
+        xhr.send(JSON.stringify({'id': id.text()}));
+    }
+
+    $(document).on('click', '.delete-button', delete_data);
+    $(".calculate-button").click(get_calculate_request);
+    $(".save-button").click(get_save_request);
+
+</script>
+
+<style>
+    .num-index {
+        display: none;
+    }
+</style>
+
+</body>
+</html>

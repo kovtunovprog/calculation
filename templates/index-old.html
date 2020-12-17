@@ -1,0 +1,45 @@
+<h1>Hello, {{ user.username }}</h1>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+{% if user %}
+    <label for="input-num-a">a</label><input id="input-num-a">
+    <label for="input-num-b">b</label><input id="input-num-b">
+    <label for="input-num-c">c</label><input id="input-num-c">
+    <button class="calculate-button" type="button">Calculate</button>
+    <button class="save-button">Save</button>
+    <p id="num-result"></p>
+{% endif %}
+
+<script>
+
+    function get_calculate_request() {
+        let a = $('#input-num-a').val();
+        let b = $('#input-num-b').val();
+        let c = $('#input-num-c').val();
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'api/1.0/nums/calculate', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function () {
+            console.log(xhr.responseText);
+            let responseObj = JSON.parse(xhr.responseText);
+            $('#num-result').html(responseObj.num);
+        };
+        xhr.send(JSON.stringify({'nums': [a, b, c]}));
+    }
+
+    function get_save_request() {
+        let num = $('#num-result').html();
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'api/1.0/nums', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function () {
+            console.log(xhr.responseText);
+
+        };
+        xhr.send(JSON.stringify({'num': num}));
+    }
+
+    $(".calculate-button").click(get_calculate_request);
+    $(".save-button").click(get_save_request)
+
+</script>
