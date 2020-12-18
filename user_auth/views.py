@@ -60,6 +60,6 @@ def login_view(request):
 def logout_view(request):
     username = request.user.username
     logout(request)
-    if username == 'test':
+    if 'test' in username:
         User.objects.filter(username=username).delete()
     return redirect(index)

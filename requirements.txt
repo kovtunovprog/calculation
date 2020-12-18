@@ -1,3 +1,4 @@
+psutil
 selenium
 asgiref==3.3.1
 Django==3.1.4

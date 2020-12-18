@@ -1,11 +1,12 @@
 import json
+import unittest
 
-from django.test import TestCase, Client
+from django.test import Client
 
 from core.models import CalculateResults
 
 
-class TestCalculate(TestCase):
+class TestCalculate(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
