@@ -14,7 +14,7 @@
 <header>
    <span>Calculate</span>
    <div class="header-buttons">
-       <span style="font-size: 14px; margin-right: 10px">{{ user.username }}</span>
+       <span id="username" style="font-size: 14px; margin-right: 10px">{{ user.username }}</span>
        {% if user.id %}
            <a href="{% url 'logout' %}" id="logout" class="button sign_in_button">Logout</a>
        {% else %}
@@ -28,15 +28,15 @@
     <div class="block-inline calculations">
         <div class="text">
         {% if user.id %}
-            <h1>Подсчет отрицательных чисел</h1>
+            <h1 id="main-title">Подсчет отрицательных чисел</h1>
         {% else %}
-            <h1>Hello!</h1>
+            <h1 id="main-title">Hello!</h1>
         {% endif %}
             {% if user.id %}
                 <label for="input-num-a">a</label><input id="input-num-a">
                 <label for="input-num-b">b</label><input id="input-num-b">
                 <label for="input-num-c">c</label><input id="input-num-c">
-                <button class="calculate-button button" type="button">Calculate</button>
+                <button id="calculate-button" class="calculate-button button" type="button">Calculate</button>
                 <button id="save-button" class="save-button button">Save</button>
                 <div class="result-num-block">
                     <p>Result:</p>
@@ -70,7 +70,7 @@
             let results = $('.results');
             results.html('');
             arr.forEach(function(item, i,) {
-                let text = "<div class='result'>" + "<p>" + item.date + "</p>" + "<p>" + item.num + "</p>" + "<p>" + item.input_a + "</p>" + "<p>" + item.input_b + "</p>" + "<p>" + item.input_c + "</p>" + "<button class='button delete-button'>Delete</button>" + "<p class='num-index'>" + item.id +  "</p>" + "</div>";
+                let text = "<div class='result'>" + "<p>" + item.date + "</p>" + "<p class='block-result-num'>" + item.num + "</p>" + "<p class='block-result-input-a'>" + item.input_a + "</p>" + "<p class='block-result-input-b'>" + item.input_b + "</p>" + "<p class='block-result-input-c'>" + item.input_c + "</p>" + "<button class='button delete-button'>Delete</button>" + "<p class='num-index'>" + item.id +  "</p>" + "</div>";
                 results.append(text);
             });
 

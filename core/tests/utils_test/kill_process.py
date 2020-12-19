@@ -7,4 +7,10 @@ def kill_server_process():
         if proc.name() == 'Python':
             for conn in proc.connections():
                 if conn.laddr.port == 8000:
+                    print('process was find')
                     proc.send_signal(SIGTERM)
+                    proc.kill()
+
+
+if __name__ == '__main__':
+    kill_server_process()
