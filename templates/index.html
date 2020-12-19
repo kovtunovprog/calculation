@@ -14,7 +14,8 @@
 <header>
    <span>Calculate</span>
    <div class="header-buttons">
-       <span id="username" style="font-size: 14px; margin-right: 10px">{{ user.username }}</span>
+       <span id="welcome" style="font-size: 14px; margin-right: 5px">{{ welcome }},</span>
+       <span id="username" style="font-size: 14px; margin-right: 10px"> {{ user.username }}</span>
        {% if user.id %}
            <a href="{% url 'logout' %}" id="logout" class="button sign_in_button">Logout</a>
        {% else %}
@@ -59,6 +60,13 @@
 </section>
 
 <script>
+    let link = $(location).attr('href');
+    let url = new URL(link);
+    url.searchParams.delete('test');
+
+    let welcome = $('#welcome');
+    if (welcome.html() === ',')
+        welcome.hide();
     get_all_nums();
     function get_all_nums() {
         const xhr = new XMLHttpRequest();

@@ -1,16 +1,29 @@
 import json
 
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from core.models import CalculateResults
+
+User = get_user_model()
 
 
 @csrf_exempt
 def index(request):
     if request.method == 'GET':
         template_name = 'index.html'
+        if request.user.id:
+            username = request.user.username
+            user = User.objects.get(username=username)
+            calculate_login = user.calculate_login
+            if calculate_login == 0:
+                user.calculate_login = 1
+                user.save()
+                context = {'welcome': 'welcome'}
+                return render(request, template_name, context=context)
         return render(request, template_name)
+
     if request.method == 'POST':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
