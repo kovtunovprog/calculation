@@ -83,9 +83,6 @@ class SeleniumTest(unittest.TestCase):
         self.assertEquals(deleted, True)
         driver.close()
 
-    def tearDown(self):
-        self.backend_process.kill()
-
     def test_stop_server(self):
         time.sleep(60)
         kill_server_process()
