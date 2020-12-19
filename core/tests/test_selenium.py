@@ -31,6 +31,7 @@ class SeleniumTest(unittest.TestCase):
         h1 = driver.find_element_by_id('main-title')
         self.assertEquals(span_username.text, self.test_username)
         self.assertEquals(h1.text, 'Подсчет отрицательных чисел')
+        driver.close()
 
     def test_selenium_calculate(self):
         driver = webdriver.Chrome()
@@ -44,6 +45,7 @@ class SeleniumTest(unittest.TestCase):
         self.assertEquals(input_send_a.get_attribute('value'), '1')
         self.assertEquals(input_send_b.get_attribute('value'), '-2')
         self.assertEquals(input_send_c.get_attribute('value'), '0.1')
+        driver.close()
 
     def test_selenium_save(self):
         driver = webdriver.Chrome()
@@ -61,6 +63,7 @@ class SeleniumTest(unittest.TestCase):
         self.assertEquals(result_input_a.text, '10')
         self.assertEquals(result_input_b.text, '20')
         self.assertEquals(result_input_c.text, '-40')
+        driver.close()
 
     def test_selenium_delete(self):
         time.sleep(20)
@@ -77,7 +80,8 @@ class SeleniumTest(unittest.TestCase):
         if results_before_delete != results_after_delete:
             deleted = True
         self.assertEquals(deleted, True)
+        driver.close()
 
     def test_stop_server(self):
-        time.sleep(100)
+        time.sleep(60)
         kill_server_process()
