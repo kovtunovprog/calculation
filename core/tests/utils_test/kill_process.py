@@ -4,7 +4,7 @@ from signal import SIGTERM
 
 def kill_server_process():
     for proc in process_iter():
-        if proc.name() == 'Python':
+        if proc.name() == 'Python' or proc.name() == 'python.exe':
             for conn in proc.connections():
                 if conn.laddr.port == 8000:
                     print('process was find')
