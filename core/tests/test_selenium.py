@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model
 import threading
 
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
 
 from core.tests.utils_test.kill_process import kill_server_process
 from core.tests.utils_test.selenium_scripts import selenium_login_or_register, selenium_calculate_script
@@ -78,3 +77,7 @@ class SeleniumTest(unittest.TestCase):
         if results_before_delete != results_after_delete:
             deleted = True
         self.assertEquals(deleted, True)
+
+    def test_stop_server(self):
+        time.sleep(100)
+        kill_server_process()
