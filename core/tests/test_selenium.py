@@ -69,6 +69,7 @@ class SeleniumTest(unittest.TestCase):
         time.sleep(20)
         driver = webdriver.Chrome()
         selenium_login_or_register(driver, self.test_username, self.test_password, self.login_url)
+        time.sleep(3)
         results_element = driver.find_element_by_class_name('results')
         results_before_delete = results_element.text
         delete_button = driver.find_element_by_class_name('delete-button')
@@ -81,6 +82,9 @@ class SeleniumTest(unittest.TestCase):
             deleted = True
         self.assertEquals(deleted, True)
         driver.close()
+
+    def tearDown(self):
+        self.backend_process.kill()
 
     def test_stop_server(self):
         time.sleep(60)
